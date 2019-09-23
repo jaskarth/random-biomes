@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "supercoder79.randombiomes.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinWorld",
+    "MixinMinecraftClient",
+    "MixinBiomeLayerSampler"
+  ],
+  "client": [
+    "MixinCreateWorldScreen"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
