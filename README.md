@@ -1,16 +1,8 @@
-# Fabric Example Mod
+# Random Biome Mod
 
-## Setup
-
-1. Edit build.gradle and mod.json to suit your needs.
-    * The "mixins" object can be removed from mod.json if you do not need to use mixins.
-    * Please replace all occurences of "modid" with your own mod ID - sometimes, a different string may also suffice.
-2. Run the following command:
-
-```
-./gradlew idea
-```
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+Random Biome Mod creates new biomes every time you make a new world. This means that every world you create will be totally unique!
+This is just meant as a proof of concept mod so there might be really big issues. The biggest issues currently are:
+* Multiplayer doesn't work
+* Saving and loading a world creates ugly biome edges
+* Random crashes
+Therefore I highly discourage the use of this mod with existing worlds. You should really use this with a new world, otherwise you may break a lot of stuff.
