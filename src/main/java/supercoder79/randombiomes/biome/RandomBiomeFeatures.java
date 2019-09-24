@@ -2,7 +2,6 @@ package supercoder79.randombiomes.biome;
 
 import com.terraformersmc.terraform.feature.FallenLogFeature;
 import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 
 public class RandomBiomeFeatures {

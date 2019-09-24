@@ -1,17 +1,11 @@
 package supercoder79.randombiomes.biome;
 
 import com.terraformersmc.terraform.biome.builder.TerraformBiome;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.MineshaftFeature;
 import net.minecraft.world.gen.feature.MineshaftFeatureConfig;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
-
-import java.util.Random;
 
 import static com.terraformersmc.terraform.biome.builder.DefaultFeature.*;
 

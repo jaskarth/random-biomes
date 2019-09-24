@@ -1,9 +1,11 @@
 package supercoder79.randombiomes.data;
 
-import com.terraformersmc.terraform.biome.builder.TerraformBiome;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 
+/**
+ * Will eventually be used for synchronizing data from the server to the client through a packet
+ **/
 public class BiomeData {
     public Biome rawBiome;
     public int rawID;

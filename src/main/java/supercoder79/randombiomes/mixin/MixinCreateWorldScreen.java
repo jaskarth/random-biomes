@@ -83,7 +83,7 @@ public class MixinCreateWorldScreen {
             }
             //Generate cactus for lush deserts
             if (s == RandomSurfaceBuilders.MOSTLY_SAND || s == RandomSurfaceBuilders.MOSTLY_GRASS) {
-                cactusCount = r.nextInt(60)+120; //Lush deserts have more cactus because... er.. reasons
+                cactusCount = r.nextInt(60)+60; //Lush deserts have more cactus because... er.. reasons
             }
 
             //Generate basic biome info
