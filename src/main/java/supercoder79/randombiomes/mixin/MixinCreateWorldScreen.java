@@ -35,9 +35,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Mixin(CreateWorldScreen.class)
 public class MixinCreateWorldScreen {
@@ -51,22 +49,29 @@ public class MixinCreateWorldScreen {
         BiomeStateManager.idBiomeMap.clear();
         Random r = new Random();
         for (int j = 0; j<=9;j++) {
+            Map<String, Integer> features = new HashMap<>();
             //Create trees and fallen logs
             int oakTreeAmt = r.nextInt(4);
             int oakLogAmt = 0;
             if (oakTreeAmt > 0) {
                 oakLogAmt = r.nextInt(2);
             }
+            features.put("oak_trees", oakTreeAmt);
+            features.put("oak_logs", oakLogAmt);
             int birchTreeAmt = r.nextInt(4);
             int birchLogAmt = 0;
             if (birchTreeAmt > 0) {
                 birchLogAmt = r.nextInt(2);
             }
+            features.put("birch_trees", birchTreeAmt);
+            features.put("birch_logs", birchLogAmt);
             int spruceTreeAmt = r.nextInt(4);
             int spruceLogAmt = 0;
             if (spruceTreeAmt > 0) {
                 spruceLogAmt = r.nextInt(2);
             }
+            features.put("spruce_trees", spruceTreeAmt);
+            features.put("spruce_logs", spruceLogAmt);
             //Create surface builders and configs
             int surfaceBuilder = r.nextInt(11);
             SurfaceBuilder s = BiomeStateManager.getSurfaceBuilder(surfaceBuilder);
@@ -85,6 +90,7 @@ public class MixinCreateWorldScreen {
             if (s == RandomSurfaceBuilders.MOSTLY_SAND || s == RandomSurfaceBuilders.MOSTLY_GRASS || s == RandomSurfaceBuilders.MIXED_SAND) {
                 cactusCount = r.nextInt(60)+60; //Lush deserts have way more cactus
             }
+            features.put("cacti", cactusCount);
 
             //Generate basic biome info
             int waterColor = 4159204 + (r.nextInt((10000 - -10000) + 1) + -10000);
@@ -93,8 +99,11 @@ public class MixinCreateWorldScreen {
             float temperature = r.nextFloat();
             float downfall = r.nextFloat();
             int grassAmt = r.nextInt(4)+2;
+            features.put("grass", grassAmt);
             int fernAmt = r.nextInt(4);
+            features.put("ferns", fernAmt);
             int weight = r.nextInt(4)+1;
+
             Identifier id = new Identifier("randombiomes", Integer.toString(j));
             //Register the biome
             Biome b = Registry.register(Registry.BIOME, id, BiomeBase.template.builder()
@@ -125,7 +134,7 @@ public class MixinCreateWorldScreen {
             BiomeStateManager.data.add(biomeData);
             BiomeStateManager.firstLoad = true;
 
-            data = new SerializableBiomeData(Registry.BIOME.getRawId(b), j, depth, scale, temperature, downfall, waterColor, oakTreeAmt, birchTreeAmt, spruceTreeAmt, oakLogAmt, birchLogAmt, spruceLogAmt, grassAmt, fernAmt, cactusCount, 0, surfaceBuilder, surfaceConfig, weight);
+            data = new SerializableBiomeData(Registry.BIOME.getRawId(b), j, depth, scale, temperature, downfall, waterColor, features, surfaceBuilder, surfaceConfig, weight);
             list.add(data);
         }
         try {

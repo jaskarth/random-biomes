@@ -37,7 +37,10 @@ import java.lang.reflect.Modifier;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftClient {
@@ -68,15 +71,15 @@ public class MixinMinecraftClient {
                             .downfall(data.rainfall)
                             .waterColor(data.waterColor)
                             .waterFogColor(data.waterColor)
-                            .addTreeFeature(Feature.NORMAL_TREE, data.oakTreeAmt)
-                            .addTreeFeature(Feature.BIRCH_TREE, data.birchTreeAmt)
-                            .addTreeFeature(Feature.PINE_TREE, data.spruceTreeAmt)
-                            .addTreeFeature(RandomBiomeFeatures.OAK_FALLEN_LOG, data.oakLogAmt)
-                            .addTreeFeature(RandomBiomeFeatures.BIRCH_FALLEN_LOG, data.birchLogAmt)
-                            .addTreeFeature(RandomBiomeFeatures.SPRUCE_FALLEN_LOG, data.spruceLogAmt)
-                            .addGrassFeature(Blocks.GRASS.getDefaultState(), data.grassAmt)
-                            .addGrassFeature(Blocks.FERN.getDefaultState(), data.fernAmt)
-                            .addCustomFeature(GenerationStep.Feature.VEGETAL_DECORATION, Biome.configureFeature(Feature.CACTUS, FeatureConfig.DEFAULT, Decorator.COUNT_HEIGHTMAP_DOUBLE, new CountDecoratorConfig(data.cactusAmt)))
+                            .addTreeFeature(Feature.NORMAL_TREE, data.features.get("oak_trees"))
+                            .addTreeFeature(Feature.BIRCH_TREE, data.features.get("birch_trees"))
+                            .addTreeFeature(Feature.PINE_TREE, data.features.get("spruce_trees"))
+                            .addTreeFeature(RandomBiomeFeatures.OAK_FALLEN_LOG, data.features.get("oak_logs"))
+                            .addTreeFeature(RandomBiomeFeatures.BIRCH_FALLEN_LOG, data.features.get("birch_logs"))
+                            .addTreeFeature(RandomBiomeFeatures.SPRUCE_FALLEN_LOG, data.features.get("spruce_logs"))
+                            .addGrassFeature(Blocks.GRASS.getDefaultState(), data.features.get("grass"))
+                            .addGrassFeature(Blocks.FERN.getDefaultState(), data.features.get("ferns"))
+                            .addCustomFeature(GenerationStep.Feature.VEGETAL_DECORATION, Biome.configureFeature(Feature.CACTUS, FeatureConfig.DEFAULT, Decorator.COUNT_HEIGHTMAP_DOUBLE, new CountDecoratorConfig(data.features.get("cacti"))))
                             .build();
                     if (BiomeStateManager.holder == null) {
                         BiomeStateManager.holder = b_raw;
@@ -90,7 +93,7 @@ public class MixinMinecraftClient {
                         //Register if the biomes weren't already added
                         Biome b;
                         b = Registry.register(Registry.BIOME, data.rawID, id.toString(), b_raw);
-                        OverworldBiomes.addContinentalBiome(b, OverworldClimate.TEMPERATE, new Random().nextInt(4) + 1);
+                        OverworldBiomes.addContinentalBiome(b, OverworldClimate.TEMPERATE, data.weight);
                     }
                 }
                 //If new biomes need to be injected
