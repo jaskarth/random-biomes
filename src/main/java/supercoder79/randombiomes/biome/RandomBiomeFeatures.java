@@ -1,4 +1,4 @@
-package supercoder79.randombiomes;
+package supercoder79.randombiomes.biome;
 
 import com.terraformersmc.terraform.feature.FallenLogFeature;
 import net.minecraft.block.Blocks;

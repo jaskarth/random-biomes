@@ -1,5 +1,8 @@
 package supercoder79.randombiomes.data;
 
+/**
+ * Holder class for JSON serializing biomes
+ **/
 public class SerializableBiomeData {
     public int rawID; //registry ID
     public int biomeID; //for loop num (0-9)
@@ -20,8 +23,9 @@ public class SerializableBiomeData {
     public int deadBushAmt; //TODO
     public int surfaceBuilder;
     public int surfaceBuilderConfig;
+    public int weight;
 
-    public SerializableBiomeData(int rawID, int biomeID, float depth, float scale, float temperature, float rainfall, int waterColor, int oakTreeAmt, int birchTreeAmt, int spruceTreeAmt, int oakLogAmt, int birchLogAmt, int spruceLogAmt, int grassAmt, int fernAmt, int cactusAmt, int deadBushAmt, int surfaceBuilder, int surfaceBuilderConfig) {
+    public SerializableBiomeData(int rawID, int biomeID, float depth, float scale, float temperature, float rainfall, int waterColor, int oakTreeAmt, int birchTreeAmt, int spruceTreeAmt, int oakLogAmt, int birchLogAmt, int spruceLogAmt, int grassAmt, int fernAmt, int cactusAmt, int deadBushAmt, int surfaceBuilder, int surfaceBuilderConfig, int weight) {
         this.rawID = rawID;
         this.biomeID = biomeID;
         this.depth = depth;
@@ -41,5 +45,6 @@ public class SerializableBiomeData {
         this.deadBushAmt = deadBushAmt;
         this.surfaceBuilder = surfaceBuilder;
         this.surfaceBuilderConfig = surfaceBuilderConfig;
+        this.weight = weight;
     }
 }

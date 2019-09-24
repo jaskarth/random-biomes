@@ -1,4 +1,4 @@
-package supercoder79.randombiomes;
+package supercoder79.randombiomes.biome;
 
 import com.terraformersmc.terraform.surface.BeachSurfaceBuilder;
 import com.terraformersmc.terraform.surface.CliffSurfaceBuilder;
@@ -17,7 +17,7 @@ public class RandomSurfaceBuilders {
             new CliffSurfaceBuilder(CliffSurfaceConfig::deserialize,
                     62,
                     SurfaceBuilder.DEFAULT));
-    public static CliffSurfaceConfig BASALT_CONFIG = new CliffSurfaceConfig(
+    public static CliffSurfaceConfig CLIFF_CONFIG = new CliffSurfaceConfig(
             Blocks.GRASS_BLOCK.getDefaultState(),
             Blocks.DIRT.getDefaultState(),
             Blocks.SAND.getDefaultState(),

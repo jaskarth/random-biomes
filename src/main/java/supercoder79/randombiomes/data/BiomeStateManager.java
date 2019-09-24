@@ -3,7 +3,7 @@ package supercoder79.randombiomes.data;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
-import supercoder79.randombiomes.RandomSurfaceBuilders;
+import supercoder79.randombiomes.biome.RandomSurfaceBuilders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +65,7 @@ public class BiomeStateManager {
                 c = SurfaceBuilder.SAND_CONFIG;
                 break;
             case 5:
-                c = RandomSurfaceBuilders.BASALT_CONFIG;
+                c = RandomSurfaceBuilders.CLIFF_CONFIG;
                 break;
         }
         return c;

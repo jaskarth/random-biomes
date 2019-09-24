@@ -25,9 +25,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import sun.misc.Unsafe;
-import supercoder79.randombiomes.BiomeTest;
-import supercoder79.randombiomes.RandomBiomeFeatures;
-import supercoder79.randombiomes.StupidShit;
+import supercoder79.randombiomes.biome.BiomeBase;
+import supercoder79.randombiomes.biome.RandomBiomeFeatures;
 import supercoder79.randombiomes.data.BiomeStateManager;
 import supercoder79.randombiomes.data.SerializableBiomeData;
 
@@ -36,7 +35,6 @@ import java.io.FileReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -50,43 +48,19 @@ public class MixinMinecraftClient {
             BiomeStateManager.holder = null;
             BiomeStateManager.idBiomeMap.clear();
             try {
+                //Try loading from json
                 Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
                 path = Paths.get(path.toString(), "config", "random-biomes", string_1, "biomes.json");
                 Gson json = new GsonBuilder().create();
                 SerializableBiomeData[] list = json.fromJson(new FileReader(path.toString()), SerializableBiomeData[].class);
 
-//                System.out.println("remove from the fabric registry");
-//                Field fabricBiomes = InternalBiomeData.class.getDeclaredField("OVERWORLD_INJECTED_BIOMES");
-//                fabricBiomes.setAccessible(true);
-//                Field modifiersField = Field.class.getDeclaredField("modifiers");
-//                modifiersField.setAccessible(true);
-//                modifiersField.setInt(fabricBiomes, fabricBiomes.getModifiers() & ~Modifier.FINAL);
-//                List<Biome> fabricBiomeList = (List<Biome>)fabricBiomes.get(null);
-//                List<Biome> fabricBiomeNew = new ArrayList<>();
-//                for (Biome fb : fabricBiomeList) {
-//                    if(toDelete.contains(fb)) {
-//                        //
-//                    } else {
-//                        fabricBiomeNew.add(fb);
-//                    }
-//                }
-
-//                System.out.println("Performing unsafe operations");
-//                Field f = Unsafe.class.getDeclaredField("theUnsafe");
-//                f.setAccessible(true);
-//                Unsafe unsafe = (Unsafe) f.get(null);
-//                final Object base = unsafe.staticFieldBase(fabricBiomes);
-//                unsafe.putObject(base, unsafe.staticFieldOffset(fabricBiomes), fabricBiomeNew);
-//
-//                //StupidShit.setFinalStatic(fabricBiomes, fabricBiomeNew);
-//                //fabricBiomes.set(null, fabricBiomeNew);
-
+                //Debug vars
                 boolean toAddNew = false;
                 Map<Identifier, Biome> biomeList = new HashMap<>();
 
-
+                //Iterate through the found biomes to attempt to add them
                 for (SerializableBiomeData data : list) {
-                    Biome b_raw = BiomeTest.template.builder()
+                    Biome b_raw = BiomeBase.template.builder()
                             .configureSurfaceBuilder(BiomeStateManager.getSurfaceBuilder(data.surfaceBuilder), BiomeStateManager.getSurfaceConfig(data.surfaceBuilderConfig))
                             .depth(data.depth)
                             .scale(data.scale)
@@ -109,20 +83,24 @@ public class MixinMinecraftClient {
                     }
                     Identifier id = new Identifier("randombiomes", Integer.toString(data.biomeID));
                     if (Registry.BIOME.containsId(id)) {
+                        //If existing biomes need to be swapped out, add it to the list
                         biomeList.put(id, b_raw);
                         if (!toAddNew) toAddNew = true;
                     } else {
+                        //Register if the biomes weren't already added
                         Biome b;
                         b = Registry.register(Registry.BIOME, data.rawID, id.toString(), b_raw);
                         OverworldBiomes.addContinentalBiome(b, OverworldClimate.TEMPERATE, new Random().nextInt(4) + 1);
                     }
                 }
+                //If new biomes need to be injected
                 if (toAddNew) {
                     for (Biome b : biomeList.values()) {
                         BiomeStateManager.idBiomeMap.put(Registry.BIOME.getRawId(b), b);
                     }
 
-                    System.out.println("Stripping existing biomes");
+                    //Perform a swap of the biomes in the registry (yes this is a major hack)
+                    System.out.println("Replacing existing biomes");
                     Field entries = ((SimpleRegistry) Registry.BIOME).getClass().getDeclaredField("entries");
                     entries.setAccessible(true);
                     BiMap<Identifier, Biome> e = (BiMap<Identifier, Biome>) entries.get(Registry.BIOME);
@@ -134,11 +112,10 @@ public class MixinMinecraftClient {
                         }
                     }
 
-                    entries.set(((SimpleRegistry) Registry.BIOME), eNew);
+                    entries.set(Registry.BIOME, eNew);
 
-                    Thread.sleep(256L);
-                    //TODO: inject into the fabric registry as well
-                    System.out.println("inject into the fabric registry");
+                    //Perform an even bigger hacky-hack to add this into the fabric registry
+                    System.out.println("injecting into the fabric registry");
                     Field fabricBiomes = InternalBiomeData.class.getDeclaredField("OVERWORLD_INJECTED_BIOMES");
                     fabricBiomes.setAccessible(true);
                     Field modifiersField = Field.class.getDeclaredField("modifiers");
@@ -153,16 +130,12 @@ public class MixinMinecraftClient {
                             fabricBiomeNew.add(fb);
                         }
                     }
-                    System.out.println("Performing unsafe operations");
                     Field f = Unsafe.class.getDeclaredField("theUnsafe");
                     f.setAccessible(true);
                     Unsafe unsafe = (Unsafe) f.get(null);
                     final Object base = unsafe.staticFieldBase(fabricBiomes);
                     unsafe.putObject(base, unsafe.staticFieldOffset(fabricBiomes), fabricBiomeNew);
                 }
-
-                //StupidShit.setFinalStatic(fabricBiomes, fabricBiomeNew);
-                //fabricBiomes.set(null, fabricBiomeNew);
 
             } catch (FileNotFoundException e) {
                 System.out.println("No random biome files found");
@@ -171,8 +144,6 @@ public class MixinMinecraftClient {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 System.out.println("Illegal Access!");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
