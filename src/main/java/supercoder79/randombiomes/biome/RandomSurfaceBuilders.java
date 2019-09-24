@@ -1,9 +1,7 @@
 package supercoder79.randombiomes.biome;
 
-import com.terraformersmc.terraform.surface.BeachSurfaceBuilder;
 import com.terraformersmc.terraform.surface.CliffSurfaceBuilder;
 import com.terraformersmc.terraform.surface.CliffSurfaceConfig;
-import com.terraformersmc.terraform.surface.FloodingBeachSurfaceBuilder;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -25,7 +23,7 @@ public class RandomSurfaceBuilders {
     );
     public static MixedSandGrassSurfaceBuilder MOSTLY_GRASS = Registry.register(Registry.SURFACE_BUILDER,
             new Identifier("randombiomes", "ms"),
-            new MixedSandGrassSurfaceBuilder(TernarySurfaceConfig::deserialize, -2.5));
+            new MixedSandGrassSurfaceBuilder(TernarySurfaceConfig::deserialize, -2.25));
     public static MixedSandGrassSurfaceBuilder MOSTLY_SAND = Registry.register(Registry.SURFACE_BUILDER,
             new Identifier("randombiomes", "mg"),
             new MixedSandGrassSurfaceBuilder(TernarySurfaceConfig::deserialize, 1.75));
