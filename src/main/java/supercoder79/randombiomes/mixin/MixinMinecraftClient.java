@@ -53,7 +53,7 @@ public class MixinMinecraftClient {
             try {
                 //Try loading from json
                 Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-                path = Paths.get(path.toString(), "config", "random-biomes", string_1, "biomes.json");
+                path = Paths.get(path.toString(), "config", "randombiomes", string_1, "biomes.json");
                 Gson json = new GsonBuilder().create();
                 SerializableBiomeData[] list = json.fromJson(new FileReader(path.toString()), SerializableBiomeData[].class);
 

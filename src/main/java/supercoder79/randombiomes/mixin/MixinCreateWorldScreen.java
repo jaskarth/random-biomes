@@ -25,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import supercoder79.randombiomes.biome.BiomeBase;
 import supercoder79.randombiomes.biome.RandomBiomeFeatures;
 import supercoder79.randombiomes.biome.RandomSurfaceBuilders;
+import supercoder79.randombiomes.config.ConfigData;
 import supercoder79.randombiomes.data.BiomeData;
 import supercoder79.randombiomes.data.BiomeStateManager;
 import supercoder79.randombiomes.data.SerializableBiomeData;
@@ -54,21 +55,21 @@ public class MixinCreateWorldScreen {
             int oakTreeAmt = r.nextInt(4);
             int oakLogAmt = 0;
             if (oakTreeAmt > 0) {
-                oakLogAmt = r.nextInt(2);
+                oakLogAmt = ConfigData.data.generateFallenLogs ? r.nextInt(2) : 0;
             }
             features.put("oak_trees", oakTreeAmt);
             features.put("oak_logs", oakLogAmt);
             int birchTreeAmt = r.nextInt(4);
             int birchLogAmt = 0;
             if (birchTreeAmt > 0) {
-                birchLogAmt = r.nextInt(2);
+                birchLogAmt = ConfigData.data.generateFallenLogs ? r.nextInt(2) : 0;
             }
             features.put("birch_trees", birchTreeAmt);
             features.put("birch_logs", birchLogAmt);
             int spruceTreeAmt = r.nextInt(4);
             int spruceLogAmt = 0;
             if (spruceTreeAmt > 0) {
-                spruceLogAmt = r.nextInt(2);
+                spruceLogAmt = ConfigData.data.generateFallenLogs ? r.nextInt(2) : 0;
             }
             features.put("spruce_trees", spruceTreeAmt);
             features.put("spruce_logs", spruceLogAmt);
@@ -141,7 +142,7 @@ public class MixinCreateWorldScreen {
             //Serialize all the biomes to a json
             //TODO: ignore existing JSON files
             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-            path = Paths.get(path.toString(), "config", "random-biomes", this.field_3196);
+            path = Paths.get(path.toString(), "config", "randombiomes", this.field_3196);
             Files.createDirectories(path);
             path = Paths.get(path.toString(), "biomes.json");
             Gson json = new GsonBuilder().setPrettyPrinting().create();
