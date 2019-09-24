@@ -94,15 +94,15 @@ public class MixinCreateWorldScreen {
 
             //Generate basic biome info
             int waterColor = 4159204 + (r.nextInt((10000 - -10000) + 1) + -10000);
-            float depth = -0.3F + (r.nextFloat()*(1.2F - -0.3F));
-            float scale = r.nextFloat()*1.25F;
+            float depth = -0.5F + (r.nextFloat()*(1.4F - -0.5F));
+            float scale = r.nextFloat()*1.4F;
             float temperature = r.nextFloat();
             float downfall = r.nextFloat();
             int grassAmt = r.nextInt(4)+2;
             features.put("grass", grassAmt);
             int fernAmt = r.nextInt(4);
             features.put("ferns", fernAmt);
-            int weight = r.nextInt(4)+1;
+            int weight = r.nextInt(3)+1;
 
             Identifier id = new Identifier("randombiomes", Integer.toString(j));
             //Register the biome
