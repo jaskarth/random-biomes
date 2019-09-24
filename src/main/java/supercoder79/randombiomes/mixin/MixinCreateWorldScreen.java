@@ -68,7 +68,7 @@ public class MixinCreateWorldScreen {
                 spruceLogAmt = r.nextInt(2);
             }
             //Create surface builders and configs
-            int surfaceBuilder = r.nextInt(10);
+            int surfaceBuilder = r.nextInt(11);
             SurfaceBuilder s = BiomeStateManager.getSurfaceBuilder(surfaceBuilder);
             int surfaceConfig = r.nextInt(5);
             if (s instanceof CliffSurfaceBuilder) { //Cliff Surface Builder will crash without Cliff Surface Config
@@ -82,8 +82,8 @@ public class MixinCreateWorldScreen {
                 cactusCount = r.nextInt(25)+5;
             }
             //Generate cactus for lush deserts
-            if (s == RandomSurfaceBuilders.MOSTLY_SAND || s == RandomSurfaceBuilders.MOSTLY_GRASS) {
-                cactusCount = r.nextInt(60)+60; //Lush deserts have more cactus because... er.. reasons
+            if (s == RandomSurfaceBuilders.MOSTLY_SAND || s == RandomSurfaceBuilders.MOSTLY_GRASS || s == RandomSurfaceBuilders.MIXED_SAND) {
+                cactusCount = r.nextInt(60)+60; //Lush deserts have way more cactus
             }
 
             //Generate basic biome info

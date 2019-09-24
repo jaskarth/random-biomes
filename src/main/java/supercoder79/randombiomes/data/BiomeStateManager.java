@@ -49,6 +49,9 @@ public class BiomeStateManager {
             case 9:
                 s = RandomSurfaceBuilders.MOSTLY_SAND;
                 break;
+            case 10:
+                s = RandomSurfaceBuilders.MIXED_SAND;
+                break;
         }
         return s;
     }
