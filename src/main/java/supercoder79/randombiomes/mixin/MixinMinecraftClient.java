@@ -154,57 +154,29 @@ public class MixinMinecraftClient {
                     biomePickersField.setAccessible(true);
                     biomePickersField.setInt(biomePickers, fabricBiomes.getModifiers() & ~Modifier.FINAL);
                     EnumMap<OverworldClimate, WeightedBiomePicker> biomePickersList = (EnumMap<OverworldClimate, WeightedBiomePicker>) biomePickers.get(null);
-                    for (OverworldClimate c : biomePickersList.keySet()) {
-                        //System.out.println(c);
+                    for (OverworldClimate c : biomePickersList.keySet()) { //Find all of the climates
                         WeightedBiomePicker picker = biomePickersList.get(c);
                         Field weightField = picker.getClass().getDeclaredField("entries");
                         weightField.setAccessible(true);
-                        //this is just such a mess
-                        Class<?> clazz = Class.forName("net.fabricmc.fabric.impl.biomes.ContinentalBiomeEntry");
-                        List<?> weightList = (List<?>)weightField.get(picker);
-                        List<Object> newWeightList = new ArrayList<>();
+                        List<?> weightList = (List<?>)weightField.get(picker); //Get the list of all of the biomes
                         for (Object testClass : weightList) {
                             Field biome = testClass.getClass().getDeclaredField("biome");
                             biome.setAccessible(true);
                             Field weight = testClass.getClass().getDeclaredField("weight");
-                            weight.setAccessible(true);
-                            System.out.println(biome.get(testClass));
+                            weight.setAccessible(true); //Make the biome and weight fields visible
                             if (oldBiomes.contains(biome.get(testClass))) {
                                 Identifier id = oldIDs.get(oldBiomes.indexOf(biome.get(testClass)));
                                 for (SerializableBiomeData d : list) {
                                     if (d.biomeID == Integer.parseInt(id.getPath())) {
-                                        //System.out.println(4);
-                                        biome.set(testClass, biomeMap.get(id));
-                                        weight.set(testClass, d.weight);
-                                        System.out.println("Hopefully set the new weight");
-                                        break;
+                                        biome.set(testClass, biomeMap.get(id)); //Replace the old biome with the new biome
+                                        weight.set(testClass, d.weight); //Replace the old weight with the new weight
+                                        break; //If we did this right, this should eliminate ugly chunk borders and allow worlds to regenerate biomes when reloaded
                                     }
                                 }
                             }
-                            //newWeightList.add(testClass);
-                            //System.out.println(testClass);
                         }
-                        //Put this into the base set (maybe draw this shit out on a piece of paper to understand it better)
-
-
-                        //weightField.set(c, );
-                        //System.out.println(c + " :: " + biomePickersList.get(c));
                     }
-//                    List<Biome> fabricBiomeNew = new ArrayList<>();
-//                    for (Biome fb : fabricBiomeList) {
-//                        if (biomeList.containsKey(Registry.BIOME.getId(fb))) {
-//                            fabricBiomeNew.add(biomeList.get(Registry.BIOME.getId(fb)));
-//                        } else {
-//                            fabricBiomeNew.add(fb);
-//                        }
-//                    }
-//                    Field f = Unsafe.class.getDeclaredField("theUnsafe");
-//                    f.setAccessible(true);
-//                    Unsafe unsafe = (Unsafe) f.get(null);
-//                    final Object base = unsafe.staticFieldBase(fabricBiomes);
-//                    unsafe.putObject(base, unsafe.staticFieldOffset(fabricBiomes), fabricBiomeNew);
                 }
-
             } catch (FileNotFoundException e) {
                 System.out.println("No random biome files found");
             } catch (NoSuchFieldException e) {
@@ -212,8 +184,6 @@ public class MixinMinecraftClient {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 System.out.println("Illegal Access!");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
             }
         }
     }
