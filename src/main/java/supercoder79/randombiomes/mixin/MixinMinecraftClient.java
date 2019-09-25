@@ -11,7 +11,6 @@ import net.fabricmc.fabric.impl.biomes.InternalBiomeData;
 import net.fabricmc.fabric.impl.biomes.WeightedBiomePicker;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.SimpleRegistry;
@@ -23,14 +22,13 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.level.LevelInfo;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import sun.misc.Unsafe;
 import supercoder79.randombiomes.biome.BiomeBase;
 import supercoder79.randombiomes.biome.RandomBiomeFeatures;
-import supercoder79.randombiomes.data.BiomeStateManager;
+import supercoder79.randombiomes.data.BiomeUtil;
 import supercoder79.randombiomes.data.SerializableBiomeData;
 
 import java.io.FileNotFoundException;
@@ -44,14 +42,12 @@ import java.util.*;
 
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftClient {
-    @Shadow public TextRenderer textRenderer;
-
     @Inject(method = "startIntegratedServer", at = @At("HEAD"))
     public void startIntegratedServer(String string_1, String string_2, LevelInfo levelInfo_1, CallbackInfo info){
-        if (!BiomeStateManager.firstLoad) {
+        if (!BiomeUtil.firstLoad) {
             System.out.println("Attempting to load random biomes");
-            BiomeStateManager.holder = null;
-            BiomeStateManager.idBiomeMap.clear();
+            BiomeUtil.holder = null;
+            BiomeUtil.idBiomeMap.clear();
             try {
                 //Try loading from json
                 Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
@@ -66,25 +62,25 @@ public class MixinMinecraftClient {
                 //Iterate through the found biomes to attempt to add them
                 for (SerializableBiomeData data : list) {
                     Biome b_raw = BiomeBase.template.builder()
-                            .configureSurfaceBuilder(BiomeStateManager.getSurfaceBuilder(data.surfaceBuilder), BiomeStateManager.getSurfaceConfig(data.surfaceBuilderConfig))
+                            .configureSurfaceBuilder(BiomeUtil.getSurfaceBuilder(data.surfaceBuilder), BiomeUtil.getSurfaceConfig(data.surfaceBuilderConfig))
                             .depth(data.depth)
                             .scale(data.scale)
                             .temperature(data.temperature)
                             .downfall(data.rainfall)
                             .waterColor(data.waterColor)
                             .waterFogColor(data.waterColor)
-                            .addTreeFeature(Feature.NORMAL_TREE, data.features.get("oak_trees"))
-                            .addTreeFeature(Feature.BIRCH_TREE, data.features.get("birch_trees"))
-                            .addTreeFeature(Feature.PINE_TREE, data.features.get("spruce_trees"))
-                            .addTreeFeature(RandomBiomeFeatures.OAK_FALLEN_LOG, data.features.get("oak_logs"))
-                            .addTreeFeature(RandomBiomeFeatures.BIRCH_FALLEN_LOG, data.features.get("birch_logs"))
-                            .addTreeFeature(RandomBiomeFeatures.SPRUCE_FALLEN_LOG, data.features.get("spruce_logs"))
-                            .addGrassFeature(Blocks.GRASS.getDefaultState(), data.features.get("grass"))
-                            .addGrassFeature(Blocks.FERN.getDefaultState(), data.features.get("ferns"))
-                            .addCustomFeature(GenerationStep.Feature.VEGETAL_DECORATION, Biome.configureFeature(Feature.CACTUS, FeatureConfig.DEFAULT, Decorator.COUNT_HEIGHTMAP_DOUBLE, new CountDecoratorConfig(data.features.get("cacti"))))
+                            .addTreeFeature(Feature.NORMAL_TREE, data.features.getOrDefault("oak_trees", 0))
+                            .addTreeFeature(Feature.BIRCH_TREE, data.features.getOrDefault("birch_trees", 0))
+                            .addTreeFeature(Feature.PINE_TREE, data.features.getOrDefault("spruce_trees", 0))
+                            .addTreeFeature(RandomBiomeFeatures.OAK_FALLEN_LOG, data.features.getOrDefault("oak_logs", 0))
+                            .addTreeFeature(RandomBiomeFeatures.BIRCH_FALLEN_LOG, data.features.getOrDefault("birch_logs", 0))
+                            .addTreeFeature(RandomBiomeFeatures.SPRUCE_FALLEN_LOG, data.features.getOrDefault("spruce_logs", 0))
+                            .addGrassFeature(Blocks.GRASS.getDefaultState(), data.features.getOrDefault("grass", 0))
+                            .addGrassFeature(Blocks.FERN.getDefaultState(), data.features.getOrDefault("ferns", 0))
+                            .addCustomFeature(GenerationStep.Feature.VEGETAL_DECORATION, Biome.configureFeature(Feature.CACTUS, FeatureConfig.DEFAULT, Decorator.COUNT_HEIGHTMAP_DOUBLE, new CountDecoratorConfig(data.features.getOrDefault("cacti", 0))))
                             .build();
-                    if (BiomeStateManager.holder == null) {
-                        BiomeStateManager.holder = b_raw;
+                    if (BiomeUtil.holder == null) {
+                        BiomeUtil.holder = b_raw;
                     }
                     Identifier id = new Identifier("randombiomes", Integer.toString(data.biomeID));
                     if (Registry.BIOME.containsId(id)) {
@@ -101,7 +97,7 @@ public class MixinMinecraftClient {
                 //If new biomes need to be injected
                 if (toAddNew) {
                     for (Biome b : biomeMap.values()) {
-                        BiomeStateManager.idBiomeMap.put(Registry.BIOME.getRawId(b), b);
+                        BiomeUtil.idBiomeMap.put(Registry.BIOME.getRawId(b), b);
                     }
 
                     //Perform a swap of the biomes in the registry (yes this is a major hack)

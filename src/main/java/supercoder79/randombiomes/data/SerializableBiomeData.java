@@ -1,5 +1,6 @@
 package supercoder79.randombiomes.data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -29,6 +30,10 @@ public class SerializableBiomeData {
         this.surfaceBuilder = surfaceBuilder;
         this.surfaceBuilderConfig = surfaceBuilderConfig;
         this.weight = weight;
-        this.features = features;
+        Map<String, Integer> map = new HashMap<>();
+        for (String s : features.keySet()) {
+            if (features.get(s) != 0) map.put(s, features.get(s));
+        }
+        this.features = map;
     }
 }

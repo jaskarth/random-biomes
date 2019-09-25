@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import supercoder79.randombiomes.data.BiomeData;
-import supercoder79.randombiomes.data.BiomeStateManager;
+import supercoder79.randombiomes.data.BiomeUtil;
 
 import java.util.function.BiFunction;
 
@@ -24,9 +24,9 @@ public class MixinWorld {
     @Inject(method = "<init>", at = @At("RETURN"))
     protected void World(LevelProperties levelProperties_1, DimensionType dimensionType_1, BiFunction<World, Dimension, ChunkManager> biFunction_1, Profiler profiler_1, boolean boolean_1, CallbackInfo info) {
 
-        if (BiomeStateManager.firstLoad) {
-            BiomeStateManager.firstLoad = false;
-            for (BiomeData b : BiomeStateManager.data) {
+        if (BiomeUtil.firstLoad) {
+            BiomeUtil.firstLoad = false;
+            for (BiomeData b : BiomeUtil.data) {
                 System.out.println(b.rawID);
             }
         }

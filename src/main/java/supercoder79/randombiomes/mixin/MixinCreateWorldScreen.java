@@ -27,7 +27,7 @@ import supercoder79.randombiomes.biome.RandomBiomeFeatures;
 import supercoder79.randombiomes.biome.RandomSurfaceBuilders;
 import supercoder79.randombiomes.config.ConfigData;
 import supercoder79.randombiomes.data.BiomeData;
-import supercoder79.randombiomes.data.BiomeStateManager;
+import supercoder79.randombiomes.data.BiomeUtil;
 import supercoder79.randombiomes.data.SerializableBiomeData;
 
 import java.io.FileWriter;
@@ -45,9 +45,9 @@ public class MixinCreateWorldScreen {
     @Inject(method = "createLevel", at = @At("HEAD"))
     private void createLevel(CallbackInfo info) {
         List<SerializableBiomeData> list = new ArrayList<>();
-        BiomeStateManager.holder = null;
+        BiomeUtil.holder = null;
         SerializableBiomeData data;
-        BiomeStateManager.idBiomeMap.clear();
+        BiomeUtil.idBiomeMap.clear();
         Random r = new Random();
         for (int j = 0; j<=9;j++) {
             Map<String, Integer> features = new HashMap<>();
@@ -75,12 +75,12 @@ public class MixinCreateWorldScreen {
             features.put("spruce_logs", spruceLogAmt);
             //Create surface builders and configs
             int surfaceBuilder = r.nextInt(11);
-            SurfaceBuilder s = BiomeStateManager.getSurfaceBuilder(surfaceBuilder);
+            SurfaceBuilder s = BiomeUtil.getSurfaceBuilder(surfaceBuilder);
             int surfaceConfig = r.nextInt(5);
             if (s instanceof CliffSurfaceBuilder) { //Cliff Surface Builder will crash without Cliff Surface Config
                 surfaceConfig = 5;
             }
-            TernarySurfaceConfig c = BiomeStateManager.getSurfaceConfig(surfaceConfig);
+            TernarySurfaceConfig c = BiomeUtil.getSurfaceConfig(surfaceConfig);
 
             //Generate cactus for desert-like and mesa-like biomes
             int cactusCount = 0;
@@ -127,13 +127,13 @@ public class MixinCreateWorldScreen {
                     .build());
             OverworldBiomes.addContinentalBiome(b, OverworldClimate.TEMPERATE, weight);
             //This is all debug stuff that will get removed eventually (TM)
-            if (BiomeStateManager.holder == null) {
-                BiomeStateManager.holder = b;
+            if (BiomeUtil.holder == null) {
+                BiomeUtil.holder = b;
             }
             BiomeData biomeData = new BiomeData(b, Registry.BIOME.getRawId(b), id);
-            BiomeStateManager.idBiomeMap.put(Registry.BIOME.getRawId(b), b);
-            BiomeStateManager.data.add(biomeData);
-            BiomeStateManager.firstLoad = true;
+            BiomeUtil.idBiomeMap.put(Registry.BIOME.getRawId(b), b);
+            BiomeUtil.data.add(biomeData);
+            BiomeUtil.firstLoad = true;
 
             data = new SerializableBiomeData(Registry.BIOME.getRawId(b), j, depth, scale, temperature, downfall, waterColor, features, surfaceBuilder, surfaceConfig, weight);
             list.add(data);

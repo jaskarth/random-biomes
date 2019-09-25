@@ -8,16 +8,13 @@ import supercoder79.randombiomes.biome.RandomSurfaceBuilders;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * General purpose class used to handle a bunch of biome related stuff
- * It should really be renamed (eventually)
  */
-public class BiomeStateManager {
+public class BiomeUtil {
     public static ArrayList<BiomeData> data = new ArrayList<>();
     public static boolean firstLoad = false;
-    public static Random rand = new Random();
     public static Map<Integer, Biome> idBiomeMap = new HashMap<>();
     public static Biome holder = null;
 
