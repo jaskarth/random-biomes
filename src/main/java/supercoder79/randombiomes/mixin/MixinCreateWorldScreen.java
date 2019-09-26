@@ -105,6 +105,20 @@ public class MixinCreateWorldScreen {
             features.put("ferns", fernAmt);
             int weight = r.nextInt(3)+1;
 
+            int palmTreeAmt = 0;
+            if (cactusCount > 0) {
+                if (temperature > 0.6) {
+                    palmTreeAmt = r.nextInt(3); //Only generate palm trees in hot desert biomes
+                }
+            }
+            features.put("palm_trees", palmTreeAmt);
+
+            int oakShrubAmt = 0;
+            if (temperature < 0.3) {
+                oakShrubAmt = r.nextInt(3); //Only cold biomes make shrubs
+            }
+            features.put("oak_shrubs", oakShrubAmt);
+
             Identifier id = new Identifier("randombiomes", Integer.toString(j));
             //Register the biome
             Biome b = Registry.register(Registry.BIOME, id, BiomeBase.template.builder()
@@ -121,6 +135,8 @@ public class MixinCreateWorldScreen {
                     .addTreeFeature(RandomBiomeFeatures.OAK_FALLEN_LOG, oakLogAmt)
                     .addTreeFeature(RandomBiomeFeatures.BIRCH_FALLEN_LOG, birchLogAmt)
                     .addTreeFeature(RandomBiomeFeatures.SPRUCE_FALLEN_LOG, spruceLogAmt)
+                    .addTreeFeature(RandomBiomeFeatures.JUNGLE_PALM_TREE, palmTreeAmt)
+                    .addTreeFeature(RandomBiomeFeatures.OAK_SHRUB, oakShrubAmt)
                     .addGrassFeature(Blocks.GRASS.getDefaultState(), grassAmt)
                     .addGrassFeature(Blocks.FERN.getDefaultState(), fernAmt)
                     .addCustomFeature(GenerationStep.Feature.VEGETAL_DECORATION, Biome.configureFeature(Feature.CACTUS, FeatureConfig.DEFAULT, Decorator.COUNT_HEIGHTMAP_DOUBLE, new CountDecoratorConfig(cactusCount)))

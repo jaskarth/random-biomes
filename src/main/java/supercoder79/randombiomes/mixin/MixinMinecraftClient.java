@@ -72,6 +72,8 @@ public class MixinMinecraftClient {
                             .addTreeFeature(Feature.NORMAL_TREE, data.features.getOrDefault("oak_trees", 0))
                             .addTreeFeature(Feature.BIRCH_TREE, data.features.getOrDefault("birch_trees", 0))
                             .addTreeFeature(Feature.PINE_TREE, data.features.getOrDefault("spruce_trees", 0))
+                            .addTreeFeature(RandomBiomeFeatures.OAK_FALLEN_LOG, data.features.getOrDefault("palm_trees", 0))
+                            .addTreeFeature(RandomBiomeFeatures.OAK_FALLEN_LOG, data.features.getOrDefault("oak_shrubs", 0))
                             .addTreeFeature(RandomBiomeFeatures.OAK_FALLEN_LOG, data.features.getOrDefault("oak_logs", 0))
                             .addTreeFeature(RandomBiomeFeatures.BIRCH_FALLEN_LOG, data.features.getOrDefault("birch_logs", 0))
                             .addTreeFeature(RandomBiomeFeatures.SPRUCE_FALLEN_LOG, data.features.getOrDefault("spruce_logs", 0))
