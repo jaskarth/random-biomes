@@ -1,7 +1,7 @@
 package supercoder79.randombiomes.mixin;
 
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.layer.BiomeLayerSampler;
+import net.minecraft.world.biome.source.BiomeLayerSampler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

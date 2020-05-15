@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class BiomeUtil {
     public static ArrayList<BiomeData> data = new ArrayList<>();
-    public static boolean firstLoad = false;
+    public static boolean registered = false;
     public static Map<Integer, Biome> idBiomeMap = new HashMap<>();
     public static Biome holder = null;
 

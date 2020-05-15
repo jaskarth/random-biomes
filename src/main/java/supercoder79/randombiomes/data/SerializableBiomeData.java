@@ -16,10 +16,10 @@ public class SerializableBiomeData {
     public int waterColor; //used for water fog color too
     public int surfaceBuilder;
     public int surfaceBuilderConfig;
-    public int weight;
+    public double weight;
     public Map<String, Integer> features;
 
-    public SerializableBiomeData(int rawID, int biomeID, float depth, float scale, float temperature, float rainfall, int waterColor, Map<String, Integer> features, int surfaceBuilder, int surfaceBuilderConfig, int weight) {
+    public SerializableBiomeData(int rawID, int biomeID, float depth, float scale, float temperature, float rainfall, int waterColor, Map<String, Integer> features, int surfaceBuilder, int surfaceBuilderConfig, double weight) {
         this.rawID = rawID;
         this.biomeID = biomeID;
         this.depth = depth;

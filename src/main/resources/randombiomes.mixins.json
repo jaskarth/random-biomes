@@ -5,7 +5,8 @@
   "mixins": [
     "MixinWorld",
     "MixinMinecraftClient",
-    "MixinBiomeLayerSampler"
+    "MixinBiomeLayerSampler",
+    "MixinFindBiomeCommand"
   ],
   "client": [
     "MixinCreateWorldScreen"

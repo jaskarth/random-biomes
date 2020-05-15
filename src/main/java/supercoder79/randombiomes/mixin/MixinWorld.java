@@ -24,11 +24,8 @@ public class MixinWorld {
     @Inject(method = "<init>", at = @At("RETURN"))
     protected void World(LevelProperties levelProperties_1, DimensionType dimensionType_1, BiFunction<World, Dimension, ChunkManager> biFunction_1, Profiler profiler_1, boolean boolean_1, CallbackInfo info) {
 
-        if (BiomeUtil.firstLoad) {
-            BiomeUtil.firstLoad = false;
-            for (BiomeData b : BiomeUtil.data) {
-                System.out.println(b.rawID);
-            }
+        if (BiomeUtil.registered) {
+            BiomeUtil.registered = false;
         }
     }
 }
